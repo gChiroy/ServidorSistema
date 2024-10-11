@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../db/index')
 const moment = require('moment-timezone');
 
-
+ 
 // Modelo para la tabla 'customers'
 const Customer = sequelize.define('Customer', {
       id_customer: {
