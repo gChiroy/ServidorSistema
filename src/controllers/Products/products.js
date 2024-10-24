@@ -16,14 +16,7 @@ cloudinary.config({
     api_secret: api_secret,
   });
 
-// id_product,
-//   url_product,
-//   id_public,
-//   name,
-//   code_product,
-//   profit_porc,
-//   createdAt,
-//   updatedAt
+
 exports.getProduct = async (req, res) => {
     try {
         // Sincronizar los modelos Category con la base de datos
@@ -67,8 +60,6 @@ exports.getProductById = async (req, res) =>{
         console.log(error);
     }
 }
-
-
 
 
 exports.createProduct = async (req, res) => {
@@ -121,15 +112,6 @@ exports.createProduct = async (req, res) => {
     }
 }
 
-
-// id_product,
-//   url_product,
-//   id_public,
-//   name,
-//   code_product,
-//   profit_porc,
-//   createdAt,
-//   updatedAt
 exports.editProduct = async (req, res) => {
     try {
         const { id }  = req.params;

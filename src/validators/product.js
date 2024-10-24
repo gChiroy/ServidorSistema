@@ -17,14 +17,72 @@ const existingProduct =  check('code_product').custom(async (value)=>{
     }
   })
 
-  const stock = check('stock').custom(async(value)=>{
-    const stock = await InventoryProduct.findOne({where : { stock: value}});
-    if (stock === 0) {
-      throw new Error('No hay suficiente stock para el producto' )
+
+
+
+const validateStock = async (req, res, next) => {
+  try {
+    const { details } = req.body;
+
+    if (!details || !Array.isArray(details)) {
+      return res.status(400).json({
+        errors: [{
+          type: 'field',
+          value: details,
+          msg: 'Detalles de venta inválidos',
+          path: 'details',
+          location: 'body'
+        }]
+      });
     }
-  })
+
+    for (const detail of details) {
+      const inventoryProduct = await InventoryProduct.findByPk(detail.product_id);
+      
+      if (!inventoryProduct) {
+        return res.status(404).json({
+          errors: [{
+            type: 'field',
+            value: detail.product_id,
+            msg: `Producto con ID ${detail.product_id} no encontrado en inventario`,
+            path: 'product_id',
+            location: 'body'
+          }]
+        });
+      }
+      
+      if (inventoryProduct.stock <= 0 || detail.amount > inventoryProduct.stock) {
+        return res.status(400).json({
+          errors: [{
+            type: 'field',
+            value: detail.amount,
+            msg: `No hay suficiente stock para ${detail.producto.Product.name}`,
+            path: 'amount',
+            location: 'body',
+            availableStock: inventoryProduct.stock
+          }]
+        });
+      }
+    }
+
+    next();
+  } catch (error) {
+    console.error('Error al validar el stock:', error);
+    res.status(500).json({
+      errors: [{
+        type: 'internal',
+        msg: 'Error interno al validar el stock',
+        path: 'internal',
+        location: 'server'
+      }]
+    });
+  }
+};
+
+
 
   module.exports = {
     productValid : [existingProduct],
-    prformaValid : [existingProforma]
+    prformaValid : [existingProforma],
+    prStock: [validateStock]
   }

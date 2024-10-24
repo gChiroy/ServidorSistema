@@ -12,9 +12,7 @@ exports.allInventory = async(req, res)=> {
                 {
                     model: Produtcs,
                     include:[
-                        // {
-                        //     model:Brand
-                        // },
+                   
                         {
                             model: Category
                         }
@@ -46,9 +44,7 @@ exports.getProductById = async (req, res) => {
         {
           model: Produtcs,
           include: [
-            // {
-            //   model: Brand,
-            // },
+     
             {
               model: Category,
             },
@@ -72,6 +68,35 @@ exports.getProductById = async (req, res) => {
   }
 };
 
+exports.allInventorySale = async (req, res) => {
+  try {
+    const inventory = await InventoryProduct.findAll({
+      include: [
+        {
+          model: Produtcs,
+          include: [
+            // { model: Brand }, 
+            { model: Category }
+          ],
+          where: {
+            name: {
+              [Op.ne]: null
+            }
+          }
+        }
+      ]
+    });
+    
+    if(inventory.length === 0){
+       return res.status(404).json({ message: 'No hay productos en el inventario'});
+    }
+
+    return res.status(200).json(inventory);
+
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
 
@@ -84,9 +109,7 @@ exports.allInventory2 = async (req, res) => {
               {
                   model: Produtcs,
                   include: [
-                      // {
-                      //     model: Brand,
-                      // },
+                 
                       {
                           model: Category,
                       },

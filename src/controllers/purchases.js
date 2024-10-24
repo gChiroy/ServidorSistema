@@ -112,7 +112,7 @@ exports.getByIdPurchase = async(req, res) =>{
         console.log(error)
     }
 }
-///registra compras
+
 exports.createShopping = async (req, res) => {
   try {
       const { provider_id, details } = req.body;
@@ -152,11 +152,11 @@ exports.createShopping = async (req, res) => {
           bill_number: newBillNumber,
           providers_id_provider: provider_id // Asignar el proveedor a la compra
       });
-//genera detalle shopping
+
       const detailPromises = details.map(async (detail) => {
           const discount = parseFloat(detail.discount) || 0;
           const idProduct = detail.id_product;
-//cantidad * precio compra -descuento
+
           const subtotal = (detail.amount * detail.purchase_price) - discount;
 
           await DetailShopping.create({
@@ -179,8 +179,29 @@ exports.createShopping = async (req, res) => {
       // Actualizar el campo total en la compra
       await newShopping.update({ total });
 
-      return res.status(201).json({ message: 'Compra registrada exitosamente', shopping: newShopping });
+      // Obtiene la caja diaria activa
+    const cajaDiaria = await DailyBox.findOne({
+      where: { status: true },
+    });
 
+      if (cajaDiaria) {
+        // Inserta un nuevo registro en la tabla MovementBox con el total calculado
+        const mov = await MovementBox.create({
+            type_movement_box_id_type_movement_box: 2,
+            concept: 'Compra',
+            total: total,
+            daily_box_id_daily_box: cajaDiaria.id_daily_box,
+        });
+        // Crear un nuevo registro en la tabla sales_movement_box
+        await ShoppingMovementBox.create({
+            shopping_id_shopping: newShopping.id_shopping,
+            movement_box_id_movement_box: mov.id_movement_box,
+        });
+
+        return res.status(201).json({ message: 'Compra registrada exitosamente', shopping: newShopping });
+    } else {
+        return res.status(400).json({ error: 'No hay caja diaria activa.' });
+    }
   } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error al crear la compra' });
@@ -279,6 +300,22 @@ exports.updateShopping = async (req, res) => {
       // Actualizar el campo total en la compra
       await existingShopping.update({ total });
 
+      // Buscar el registro en SalesMovementBox y obtener el ID de MovementBox
+      const shoppingMovementBox = await ShoppingMovementBox.findOne({
+        where: { shopping_id_shopping: shoppingId },
+      });
+
+      if (shoppingMovementBox) {
+        const movementBoxId = shoppingMovementBox.movement_box_id_movement_box;
+
+        // Actualizar el campo total en el registro de MovementBox correspondiente
+        const movementBox = await MovementBox.findByPk(movementBoxId);
+
+        if (movementBox) {
+          await movementBox.update({ total: total });
+        }
+      }
+
   
       res.json({  
         message: 'Compra actualizada exitosamente', 
@@ -315,6 +352,23 @@ exports.deleteDetail = async (req, res) => {
     // Eliminar el detalle de compra
     await detailToDelete.destroy();
 
+    // Restar la cantidad del producto al stock en InventoryProduct
+    const inventoryProduct = await InventoryProduct.findOne({
+      where: { products_id_product: productId },
+    });
+
+    if (inventoryProduct) {
+      const publicPrice = inventoryProduct.public_price;
+
+       // Guardar el precio antiguo del producto
+       const oldPublicPrice = inventoryProduct.old_public_price;
+       const oldPurchasePrice = inventoryProduct.old_purchase_price
+      
+      // Restar la cantidad del stock
+      const newStock = inventoryProduct.stock - amountToDelete;
+      const updateTotal = (oldPublicPrice ? oldPublicPrice : 1) * (newStock ? newStock : 1) 
+      await inventoryProduct.update({ stock: newStock, public_price: oldPublicPrice, purchase_price:oldPurchasePrice, total : updateTotal });
+    }
   
     // Recalcular el total de la compra después de eliminar el detalle
     const shopping = await Shopping.findByPk(shoppingId);
@@ -335,6 +389,23 @@ exports.deleteDetail = async (req, res) => {
       await shopping.update({ total: newTotal });
     }
 
+    // Actualiza el campo 'total' en la tabla MovementBox
+    // Busca el registro en la tabla SalesMovementBox que corresponde a esta venta
+    const shoppingMovementBox = await ShoppingMovementBox.findOne({
+      where: { shopping_id_shopping: shoppingId },
+    });
+
+    if (shoppingMovementBox) {
+      // Obtiene el registro en la tabla MovementBox
+      const movementBox = await MovementBox.findByPk(shoppingMovementBox.movement_box_id_movement_box);
+
+      if (movementBox) {
+        // Resta el nuevo total al campo 'total' en MovementBox
+        // const newMovementBoxTotal = movementBox.total - newTotal;
+        await movementBox.update({ total: newTotal });
+      }
+    }
+
     res.json({ message: 'Detalle de compra eliminado exitosamente' });
   } catch (error) {
     console.error(error);
@@ -342,7 +413,7 @@ exports.deleteDetail = async (req, res) => {
   }
 };
 
-//eliminar toda una compra
+
 
 exports.deleteShopping = async (req, res) => {
     try {
@@ -360,7 +431,25 @@ exports.deleteShopping = async (req, res) => {
             where: { shopping_id_shopping: shoppingId },
         });
 
-    
+            // Buscar el registro en SalesMovementBox asociado a la venta
+      const shoppingMovementBox = await ShoppingMovementBox.findOne({
+        where: { shopping_id_shopping: shoppingId },
+      });
+
+      if (shoppingMovementBox) {
+        // Obtener el ID de MovementBox asociado a SalesMovementBox
+        const movementBoxId = shoppingMovementBox.movement_box_id_movement_box;
+
+        // Eliminar el registro en SalesMovementBox
+        await shoppingMovementBox.destroy();
+
+        // Buscar y eliminar el registro en MovementBox asociado a la venta
+        const movementBox = await MovementBox.findByPk(movementBoxId);
+
+        if (movementBox) {
+          await movementBox.destroy();
+        }
+      }
 
         // Eliminar la compra
         await existingShopping.destroy();
