@@ -16,3 +16,4 @@ router.delete('/category/:id', userAuth, adminAuth, deleteCategory);
 
 
 module.exports = router;
+ 

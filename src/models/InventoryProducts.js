@@ -58,11 +58,7 @@ const InventoryProduct = sequelize.define('inventory_product', {
       allowNull: true,
       comment: 'Precio de compra'
     },
-    purchase_profit_por: {
-      type: DataTypes.FLOAT,
-      allowNull: true,
-      comment: 'Porcentaje de beneficio del producto'
-    },
+   
     status: {
       type: DataTypes.BOOLEAN,
       allowNull: false,

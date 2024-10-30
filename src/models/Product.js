@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const { sequelize } = require("../db/index");
 const { Category } = require("./Categories");
 const moment = require('moment-timezone');
-
+ 
 
 // Modelo para la tabla 'products'
 const Product = sequelize.define(
@@ -40,11 +40,7 @@ const Product = sequelize.define(
       allowNull: false,
       comment: "Código del producto",
     },
-    profit_porc: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-      comment: "Porcentaje de ganancia del producto",
-    },
+    
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),

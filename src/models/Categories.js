@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../db/index')
 const moment = require('moment-timezone');
 
+
   // Modelo para la tabla 'categories'
   const Category = sequelize.define('category', {
       id_category: {
