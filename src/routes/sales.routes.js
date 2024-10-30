@@ -3,6 +3,7 @@ const { userAuth, adminAuth } = require ('../middlewares/auth.middleware')
 const { createSale, allSales, getByIdSale, getProformanumber, updateSale, deleteSale} = require('../controllers/sales');
 const { prformaValid, prStock } = require('../validators/product');
 const { validationMiddleware } = require('../middlewares/validation.middleware');
+const { generatePDFProforma } = require('../controllers/pdf/sales/proforma');
 
  const router = Router(); 
 
@@ -16,5 +17,7 @@ router.get('/proform', getProformanumber)
 router.delete('/sale/:saleId', userAuth, adminAuth, deleteSale)
 
 
+ /**PROFORMA PDF */ 
+ router.get('/proforma/:id', userAuth, generatePDFProforma); 
 
  module.exports = router;
