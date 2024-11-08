@@ -6,11 +6,20 @@ const router = Router();
 
 router.get('/allInventoryproducts', userAuth, adminAuth, allInventory)
 
-router.get('/catInv2/:type', userAuth, adminAuth, allInventory2)
-router.get('/allInventorySales', userAuth, allInventorySale)
-router.get('/historyt/:id', userAuth, adminAuth, getProductMovementHistory1)
-router.get('/productById/:id', userAuth, adminAuth, getProductById);
-// router.put('/editStock/:id', userAuth, adminAuth, editSotck)
+router.get('/catInv2/:type', allInventory2)
+router.get('/allInventorySales', allInventorySale)
+router.get('/historyt/:id',  getProductMovementHistory1)
+router.get('/productById/:id',  getProductById);
+// router.put('/editStock/:id',  editSotck)
 
 
 module.exports = router
+
+
+// router.get('/allInventoryproducts', userAuth, adminAuth, allInventory)
+
+// router.get('/catInv2/:type', userAuth, adminAuth, allInventory2)
+// router.get('/allInventorySales', userAuth, allInventorySale)
+// router.get('/historyt/:id', userAuth, adminAuth, getProductMovementHistory1)
+// router.get('/productById/:id', userAuth, adminAuth, getProductById);
+// // router.put('/editStock/:id', userAuth, adminAuth, editSotck)

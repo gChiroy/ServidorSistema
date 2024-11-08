@@ -11,12 +11,12 @@ var cors = require('cors')
 
 
 // Ruta protegida solo para usuarios "admin"
-router.get('/admin', userAuth, adminAuth, protectedAdmi, (req, res) => {
+router.get('/admin',  protectedAdmi, (req, res) => {
     res.send('Welcome, admin!');
   });
   
   // Otras rutas accesibles para usuarios "admin" y "user"
-  router.get('/public', userAuth, (req, res) => {
+  router.get('/public',  (req, res) => {
     res.send('This is a public route accessible for both admin and user!');
   });
 
@@ -24,27 +24,27 @@ router.get('/admin', userAuth, adminAuth, protectedAdmi, (req, res) => {
 
 
 
-router.get("/get-users", userAuth, adminAuth, getUser)
+router.get("/get-users",  getUser)
 router.get("/getUser/:statusParam", getUserStatus)
 // Ruta para obtener un usuario por su ID
-router.get('/users/:id', userAuth, adminAuth, getUserId);
+router.get('/users/:id',  getUserId);
 
 //edit users
-router.put('/useredit/:id', userAuth, adminAuth,editUser)
+router.put('/useredit/:id', editUser)
 
 //delete users
-router.delete('/deleteuser/:id', userAuth, adminAuth, deleteUser);
+router.delete('/deleteuser/:id',  deleteUser);
 
-router.get("/protectedAdmin", userAuth ,protected)
-router.get('/protected', userAuth, protected)
+router.get("/protectedAdmin"  ,protected)
+router.get('/protected',  protected)
 
 router.post("/register", register)
 
 router.post("/login", loginValidation, validationMiddleware, login)
 
 //control estado
-router.patch('/users/:id/controlestado', userAuth, adminAuth, ControlEstado);
-router.get('/sse', userAuth, adminAuth, setupSSE)
+router.patch('/users/:id/controlestado',  ControlEstado);
+router.get('/sse',  setupSSE)
 
 
 router.get("/logout", logout)
@@ -53,3 +53,48 @@ router.get("/logout", logout)
 
 
 module.exports = router;
+
+
+
+
+
+// // Ruta protegida solo para usuarios "admin"
+// router.get('/admin', userAuth, adminAuth, protectedAdmi, (req, res) => {
+//   res.send('Welcome, admin!');
+// });
+
+// // Otras rutas accesibles para usuarios "admin" y "user"
+// router.get('/public', userAuth, (req, res) => {
+//   res.send('This is a public route accessible for both admin and user!');
+// });
+
+
+
+
+
+// router.get("/get-users", userAuth, adminAuth, getUser)
+// router.get("/getUser/:statusParam", getUserStatus)
+// // Ruta para obtener un usuario por su ID
+// router.get('/users/:id', userAuth, adminAuth, getUserId);
+
+// //edit users
+// router.put('/useredit/:id', userAuth, adminAuth,editUser)
+
+// //delete users
+// router.delete('/deleteuser/:id', userAuth, adminAuth, deleteUser);
+
+// router.get("/protectedAdmin", userAuth ,protected)
+// router.get('/protected', userAuth, protected)
+
+// router.post("/register", register)
+
+// router.post("/login", loginValidation, validationMiddleware, login)
+
+// //control estado
+// router.patch('/users/:id/controlestado', userAuth, adminAuth, ControlEstado);
+// router.get('/sse', userAuth, adminAuth, setupSSE)
+
+
+// router.get("/logout", logout)
+
+

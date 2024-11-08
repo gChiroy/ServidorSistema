@@ -6,38 +6,64 @@ const { companyValid, providerValid } = require('../validators/provider')
 const { validationMiddleware } =require('../middlewares/validation.middleware')
 const router = Router();
 
-router.get('/allProviders', userAuth, adminAuth, allProviders);
+router.get('/allProviders',  allProviders);
 // router.get('/allProviders', allProviders);
 
-router.get('/provider/:id', userAuth, adminAuth, providerById);
-router.post('/provider', providerValid, validationMiddleware, userAuth, adminAuth, registerProvider);
-router.put('/provider/:id', userAuth, adminAuth, updateProvider);
-router.delete('/provider/:id', userAuth, adminAuth, deleteProvider);
+router.get('/provider/:id', providerById);
+router.post('/provider', providerValid, validationMiddleware,  registerProvider);
+router.put('/provider/:id',  updateProvider);
+router.delete('/provider/:id',  deleteProvider);
 //saber a que compañia pertenece un proveedor
 // router.get("/provider/:id/company", getProviderCompany);
 // router.get("/providername", allProvidersName);
 
-router.get('/getdelProvider', userAuth, adminAuth, getDelProviders)
+router.get('/getdelProvider',  getDelProviders)
 
 // router.get('/allProvidersPagi/page/:page/perPage/:perPage', getProvidersPagi, userAuth, adminAuth);
 
 
 
+// router.get('/allProviders', userAuth, adminAuth, allProviders);
+// // router.get('/allProviders', allProviders);
+
+// router.get('/provider/:id', userAuth, adminAuth, providerById);
+// router.post('/provider', providerValid, validationMiddleware, userAuth, adminAuth, registerProvider);
+// router.put('/provider/:id', userAuth, adminAuth, updateProvider);
+// router.delete('/provider/:id', userAuth, adminAuth, deleteProvider);
+// //saber a que compañia pertenece un proveedor
+// // router.get("/provider/:id/company", getProviderCompany);
+// // router.get("/providername", allProvidersName);
+
+// router.get('/getdelProvider', userAuth, adminAuth, getDelProviders)
 
 
-router.get('/allCompanies', userAuth, adminAuth, allSupplier);
+router.get('/allCompanies',  allSupplier);
 
-router.get('/allSupplier', userAuth, adminAuth, allSupplierCom);
+router.get('/allSupplier',  allSupplierCom);
 
-router.get('/campany/:id', userAuth, adminAuth, supplierById);
-router.post('/campany', companyValid, validationMiddleware, userAuth, adminAuth, createSupplier);
-router.put('/campany/:id', userAuth, adminAuth, updateSupplier);
-router.delete('/campany/:id', userAuth, adminAuth, deleteSupplier);
+router.get('/campany/:id',  supplierById);
+router.post('/campany', companyValid, validationMiddleware,  createSupplier);
+router.put('/campany/:id',  updateSupplier);
+router.delete('/campany/:id',  deleteSupplier);
 
-router.delete('/deleteCompany/:id', userAuth, adminAuth, deleteCompany);
+router.delete('/deleteCompany/:id',  deleteCompany);
 
-router.patch('/is_deleted/:id', userAuth, adminAuth, selectedCategoryProvider)
+router.patch('/is_deleted/:id',  selectedCategoryProvider)
 
 
 
 module.exports = router;
+
+
+// router.get('/allCompanies', userAuth, adminAuth, allSupplier);
+
+// router.get('/allSupplier', userAuth, adminAuth, allSupplierCom);
+
+// router.get('/campany/:id', userAuth, adminAuth, supplierById);
+// router.post('/campany', companyValid, validationMiddleware, userAuth, adminAuth, createSupplier);
+// router.put('/campany/:id', userAuth, adminAuth, updateSupplier);
+// router.delete('/campany/:id', userAuth, adminAuth, deleteSupplier);
+
+// router.delete('/deleteCompany/:id', userAuth, adminAuth, deleteCompany);
+
+// router.patch('/is_deleted/:id', userAuth, adminAuth, selectedCategoryProvider)

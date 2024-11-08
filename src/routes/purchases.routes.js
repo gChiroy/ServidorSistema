@@ -6,22 +6,22 @@ const { generatePDFInvoice } = require('../controllers/pdf/purchase/bill');
 // const { generatePDFInvoice } = require('../controllers/pdf/purchase/bill')
  const router = Router();
 
-router.get('/allPurchases', userAuth, adminAuth, getPurchase)
-router.get('/bill', userAuth, adminAuth, getBillnumber);
+router.get('/allPurchases',  getPurchase)
+router.get('/bill',  getBillnumber);
 
 
-router.get('/purchase/:id', userAuth, adminAuth, getByIdPurchase)
-router.post('/purchase', userAuth, adminAuth, createShopping)
+router.get('/purchase/:id',  getByIdPurchase)
+router.post('/purchase',  createShopping)
 // router.post('/purchase', createShopping)
 
-router.put('/purchase/:shoppingId', userAuth, adminAuth, updateShopping)
+router.put('/purchase/:shoppingId',  updateShopping)
 
-router.delete('/purchase/detail/:id', userAuth, adminAuth, deleteDetail)
+router.delete('/purchase/detail/:id',  deleteDetail)
 
-router.delete('/purchase/:shoppingId', userAuth, adminAuth, deleteShopping)
+router.delete('/purchase/:shoppingId',  deleteShopping)
 
 
-router.get('/purchase/bill/:id/:filename', userAuth, adminAuth, generatePDFInvoice)
+router.get('/purchase/bill/:id/:filename',  generatePDFInvoice)
 // /********************PARA GENERA PDF */
 // // router.get('/purchase/bill/:id', generatePDFInvoice, userAuth, adminAuth)
 // router.get('/purchase/bill/:id/:filename', userAuth, adminAuth, generatePDFInvoice)
@@ -30,3 +30,22 @@ router.get('/purchase/bill/:id/:filename', userAuth, adminAuth, generatePDFInvoi
 
 
 module.exports = router;
+
+
+// router.get('/allPurchases', userAuth, adminAuth, getPurchase)
+// router.get('/bill', userAuth, adminAuth, getBillnumber);
+
+
+// router.get('/purchase/:id', userAuth, adminAuth, getByIdPurchase)
+// router.post('/purchase', userAuth, adminAuth, createShopping)
+// // router.post('/purchase', createShopping)
+
+// router.put('/purchase/:shoppingId', userAuth, adminAuth, updateShopping)
+
+// router.delete('/purchase/detail/:id', userAuth, adminAuth, deleteDetail)
+
+// router.delete('/purchase/:shoppingId', userAuth, adminAuth, deleteShopping)
+
+
+// router.get('/purchase/bill/:id/:filename', userAuth, adminAuth, generatePDFInvoice)
+// // /********************PARA GENERA PDF */

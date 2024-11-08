@@ -9,15 +9,30 @@ const { generatePDFProforma } = require('../controllers/pdf/sales/proforma');
 
 router.get('/proform', getProformanumber)
 
- router.get('/allSales', userAuth, allSales);
- router.get('/sale/:id', userAuth, getByIdSale);
- router.post('/sale', prformaValid, prStock, validationMiddleware, userAuth, createSale);
- router.put('/sale/:saleId', userAuth, updateSale);
+ router.get('/allSales',  allSales);
+ router.get('/sale/:id',  getByIdSale);
+ router.post('/sale', prformaValid, prStock, validationMiddleware,  createSale);
+ router.put('/sale/:saleId',  updateSale);
 
-router.delete('/sale/:saleId', userAuth, adminAuth, deleteSale)
+router.delete('/sale/:saleId',  deleteSale)
 
 
  /**PROFORMA PDF */ 
- router.get('/proforma/:id', userAuth, generatePDFProforma); 
+ router.get('/proforma/:id',  generatePDFProforma); 
 
  module.exports = router;
+
+ 
+
+// router.get('/proform', getProformanumber)
+
+// router.get('/allSales', userAuth, allSales);
+// router.get('/sale/:id', userAuth, getByIdSale);
+// router.post('/sale', prformaValid, prStock, validationMiddleware, userAuth, createSale);
+// router.put('/sale/:saleId', userAuth, updateSale);
+
+// router.delete('/sale/:saleId', userAuth, adminAuth, deleteSale)
+
+
+// /**PROFORMA PDF */ 
+// router.get('/proforma/:id', userAuth, generatePDFProforma); 

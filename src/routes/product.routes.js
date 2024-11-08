@@ -24,17 +24,29 @@ const upload = multer({ storage: storage });
 
 
 
-router.get('/allProducts', userAuth, adminAuth, getProduct);
+router.get('/allProducts',  getProduct);
 // router.get('/allProducts', getProduct);
 
-router.get('/product/:id', userAuth, adminAuth, getProductById);
+router.get('/product/:id',  getProductById);
 
-router.post('/product', upload.single('image'), productValid, validationMiddleware, userAuth, adminAuth, createProduct);//'image' solo es el nombre del campo del formulario del controlador, pero no es nombre de ningun campo de la base de datos
+router.post('/product', upload.single('image'), productValid, validationMiddleware,  createProduct);//'image' solo es el nombre del campo del formulario del controlador, pero no es nombre de ningun campo de la base de datos
 
-router.put('/product/:id', upload.single('image'), userAuth, adminAuth, editProduct);// ||
+router.put('/product/:id', upload.single('image'),  editProduct);// ||
 
-router.delete('/product/:id', userAuth, adminAuth, deletedProduct);
+router.delete('/product/:id',  deletedProduct);
 
 
 module.exports = router;
+
+
+// router.get('/allProducts', userAuth, adminAuth, getProduct);
+// // router.get('/allProducts', getProduct);
+
+// router.get('/product/:id', userAuth, adminAuth, getProductById);
+
+// router.post('/product', upload.single('image'), productValid, validationMiddleware, userAuth, adminAuth, createProduct);//'image' solo es el nombre del campo del formulario del controlador, pero no es nombre de ningun campo de la base de datos
+
+// router.put('/product/:id', upload.single('image'), userAuth, adminAuth, editProduct);// ||
+
+// router.delete('/product/:id', userAuth, adminAuth, deletedProduct);
 
