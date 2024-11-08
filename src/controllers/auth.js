@@ -6,8 +6,8 @@ const jwt = require("jsonwebtoken");
 const Users = require("../models/Users");
 const { config } = require ('dotenv').config();
 
-const secret = process.env.SECRET;
-
+//const secret = process.env.SECRET;
+const secret = "Mi_mensaje_Secreto"; 
 
 // const pdfMakePrinter = require('pdfmake');
 // const PDFDocument = require('pdfkit');
