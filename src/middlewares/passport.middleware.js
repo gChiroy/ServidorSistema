@@ -6,7 +6,8 @@ const Users = require('../models/Users')
 const { config } = require ('dotenv')
 config();
 
-const secret = process.env.SECRET;
+//const secret = process.env.SECRET;
+const secret = "secret";
 
 const cookieExtractor = function (req) {
   let token = null;
