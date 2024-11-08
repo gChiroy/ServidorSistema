@@ -11,10 +11,11 @@ const api_secret = process.env.API_SECRET;
  
 // Configurar cloudinary con las credenciales
 cloudinary.config({
-    cloud_name: cloud_name,
-    api_key: api_key,
-    api_secret: api_secret,
+    cloud_name: "dtvauhqrt",
+    api_key: "834519925215884",
+    api_secret: "FPi_wGNuZdgwWZ6faxWooBB_ksk",
   });
+
 
 
 exports.getProduct = async (req, res) => {
