@@ -4,7 +4,7 @@ const { allInventory, getProductMovementHistory1, getProductById, allInventory2,
 
 const router = Router();
 
-router.get('/allInventoryproducts', userAuth, adminAuth, allInventory)
+router.get('/allInventoryproducts',  allInventory)
 
 router.get('/catInv2/:type', allInventory2)
 router.get('/allInventorySales', allInventorySale)
