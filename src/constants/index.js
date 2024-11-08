@@ -5,7 +5,7 @@ config();
 module.exports = {
     PORT : process.env.PORT || 80,
     SERVER_URL: "bQdsnC6cmer2a1VK9Ldrq0rjdIWfyaCL@dpg-csmnk1o8fa8c73a988hg-a.oregon-postgres.render.com",
-    CLIENT_URL: process.env.CLIENT_URL,
+    CLIENT_URL: "https://tipicos-chiroy-web.onrender.com",
     SECRET: "SECRET",
     DB_NAME: "tipicoschiroydb", 
     DB_USERNAME: "postgresdb", 
