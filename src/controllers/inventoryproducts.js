@@ -189,8 +189,8 @@ exports.getProductMovementHistory1 = async (req, res) => {
       return res.status(404).json({ message: 'Producto no encontrado en el inventario.' });
     }
 
-    // Consultar los movimientos de compra y venta del producto y ordenarlos por fecha
-    const movements = await Promise.all([
+    // Consultar los movimientos de compra y venta del producto
+    const [purchases, sales] = await Promise.all([
       DetailShopping.findAll({
         where: {
           products_id_product: id, // Filtrar por el ID del producto
@@ -208,10 +208,14 @@ exports.getProductMovementHistory1 = async (req, res) => {
       
     ]);
 
-    // Intercalar los movimientos de compra y venta por fecha
-    const movementHistory = interleaveMovements(...movements);
+    // Combinar movimientos de compra y venta en un solo arreglo
+    const allMovements = [...purchases, ...sales];
 
-    return res.json({ movementHistory, inventoryInfo });
+    // Ordenar los movimientos intercalados por fecha (createdAt)
+    allMovements.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+
+    return res.json({ movementHistory: allMovements, inventoryInfo });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Error interno del servidor.' });
